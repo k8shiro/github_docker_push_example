@@ -9,9 +9,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
+    - name: build dockerfile
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
     - name: Run a multi-line script
       run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+        IMAGE_NAME=test_container:$(date +%s)
+        docker build ./app --tag docker.pkg.github.com/k8shiro/github_docker_push_example/${IMAGE_NAME}
+        docker login docker.pkg.github.com --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
+        docker push docker.pkg.github.com/k8shiro/github_docker_push_example/${IMAGE_NAME}
+      env:
+          DOCKER_USERNAME: ${{ secrets.GITHUB_DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_DOCKER_PASSWORD }}
