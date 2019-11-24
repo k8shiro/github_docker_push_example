@@ -9,9 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: build dockerfile
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
-    - name: Run a multi-line script
+    - name: build Dockerfile and push image
       run: |
         IMAGE_NAME=test_container:$(date +%s)
         docker build ./app --tag docker.pkg.github.com/k8shiro/github_docker_push_example/${IMAGE_NAME}
