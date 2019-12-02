@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: build Dockerfile and push image
       run: |
-        IMAGE_NAME=test_container:${GITHUB_REF}
+        IMAGE_NAME=test_container:${GITHUB_REF#refs/heads/}
         docker build ./app --tag docker.pkg.github.com/${GITHUB_REPOSITORY}/${IMAGE_NAME}
         docker login docker.pkg.github.com --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
         docker push docker.pkg.github.com/k8shiro/github_docker_push_example/${IMAGE_NAME}
